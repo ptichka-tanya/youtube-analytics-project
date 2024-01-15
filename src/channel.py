@@ -39,27 +39,19 @@ class Channel:
 
     def __lt__(self, other):
         """Реализует возможность сравнивать число подписчиков разных экземпляров класса (<)"""
-        if self.subs_count < other.subs_count:
-            return True
-        return False
+        return self.subs_count < other.subs_count
 
     def __le__(self, other):
         """Реализует возможность сравнивать число подписчиков разных экземпляров класса (<=)"""
-        if self.subs_count <= other.subs_count:
-            return True
-        return False
+        return self.subs_count <= other.subs_count
 
     def __gt__(self, other):
         """Реализует возможность сравнивать число подписчиков разных экземпляров класса (>)"""
-        if self.subs_count > other.subs_count:
-            return True
-        return False
+        return self.subs_count > other.subs_count
 
     def __ge__(self, other):
         """Реализует возможность сравнивать число подписчиков разных экземпляров класса (>=)"""
-        if self.subs_count >= other.subs_count:
-            return True
-        return False
+        return self.subs_count >= other.subs_count
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
