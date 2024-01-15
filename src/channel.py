@@ -10,16 +10,56 @@ class Channel:
     """Класс для ютуб-канала"""
 
     def __init__(self, channel_id: str) -> None:
-        """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
+        """Экземпляр инициализируется из id канала. Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
         self.youtube = build('youtube', 'v3', developerKey=api_key)
         self.channel_data = self.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         self.title = self.channel_data['items'][0]['snippet']['title']
         self.description = self.channel_data['items'][0]['snippet']['description']
         self.url = 'https://www.youtube.com/channel/' + self.__channel_id
-        self.subs_count = self.channel_data['items'][0]['statistics']['subscriberCount']
-        self.video_count = self.channel_data['items'][0]['statistics']['videoCount']
-        self.view_count = self.channel_data['items'][0]['statistics']['viewCount']
+        self.subs_count = int(self.channel_data['items'][0]['statistics']['subscriberCount'])
+        self.video_count = int(self.channel_data['items'][0]['statistics']['videoCount'])
+        self.view_count = int(self.channel_data['items'][0]['statistics']['viewCount'])
+
+    def __repr__(self):
+        """Отображает информацию об объекте класса в режиме отладки (для разработчиков)"""
+        return f'{self.__class__.__name__}({self.__channel_id})'
+
+    def __str__(self):
+        """Отображает информацию об объекте класса для пользователей"""
+        return f'{self.title} ({self.url})'
+
+    def __add__(self, other):
+        """Реализует возможность складывать число подписчиков разных экземпляров класса"""
+        return self.subs_count + other.subs_count
+
+    def __sub__(self, other):
+        """Реализует возможность вычитать число подписчиков разных экземпляров класса"""
+        return self.subs_count - other.subs_count
+
+    def __lt__(self, other):
+        """Реализует возможность сравнивать число подписчиков разных экземпляров класса (<)"""
+        if self.subs_count < other.subs_count:
+            return True
+        return False
+
+    def __le__(self, other):
+        """Реализует возможность сравнивать число подписчиков разных экземпляров класса (<=)"""
+        if self.subs_count <= other.subs_count:
+            return True
+        return False
+
+    def __gt__(self, other):
+        """Реализует возможность сравнивать число подписчиков разных экземпляров класса (>)"""
+        if self.subs_count > other.subs_count:
+            return True
+        return False
+
+    def __ge__(self, other):
+        """Реализует возможность сравнивать число подписчиков разных экземпляров класса (>=)"""
+        if self.subs_count >= other.subs_count:
+            return True
+        return False
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
