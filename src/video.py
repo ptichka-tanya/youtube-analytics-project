@@ -16,10 +16,19 @@ class Video:
         self.video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                     id=video_id
                                                     ).execute()
-        self.title = self.video_response['items'][0]['snippet']['title']
-        self.url = 'https://youtu.be/' + self.__video_id
-        self.view_count = int(self.video_response['items'][0]['statistics']['viewCount'])
-        self.like_count = int(self.video_response['items'][0]['statistics']['likeCount'])
+
+        try:
+            self.video_response['items'][0]['snippet']['title']
+        except IndexError:
+            self.title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
+        else:
+            self.title = self.video_response['items'][0]['snippet']['title']
+            self.url = 'https://youtu.be/' + self.__video_id
+            self.view_count = int(self.video_response['items'][0]['statistics']['viewCount'])
+            self.like_count = int(self.video_response['items'][0]['statistics']['likeCount'])
 
     def __repr__(self):
         """Отображает информацию об объекте класса в режиме отладки (для разработчиков)"""
